@@ -88,4 +88,11 @@ public class HomeTest {
                 .chooseMenuItem("ABOUT")
                 .checkAboutOpening();
     }
+
+    @Test
+    @Description("Check hover")
+    public void checkHover(){
+        new HomePage().openMenu()
+                .checkHover();
+    }
 }

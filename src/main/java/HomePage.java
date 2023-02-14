@@ -175,4 +175,10 @@ public class HomePage extends BasePage{
         return this;
     }
 
+    @Step ("Check hover")
+    public HomePage checkHover() {
+       navBarItems.find(Condition.exactText("ABOUT")).hover().shouldHave(Condition.cssValue("color", "rgba(226, 35, 26, 1)"));
+        return this;
+    }
+
 }
