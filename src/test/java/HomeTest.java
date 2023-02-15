@@ -1,9 +1,13 @@
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import jdk.jfr.Description;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import pages.HomePage;
+import pages.LoginPage;
 
 import static com.codeborne.selenide.Selenide.open;
+
 
 public class HomeTest {
 
@@ -11,6 +15,9 @@ public class HomeTest {
 
     @BeforeMethod
     public void setUp(){
+        SelenideLogger.addListener("AllureSelenide",
+                new AllureSelenide()
+                        .screenshots(true));
         open(URL);
         new LoginPage().login("standard_user", "secret_sauce");
     }
@@ -94,5 +101,42 @@ public class HomeTest {
     public void checkHover(){
         new HomePage().openMenu()
                 .checkHover();
+    }
+
+    @Test
+    @Description("Add to basket")
+    public void addToBasket(){
+        new HomePage().addToBasket()
+                .addToBasket()
+                .addToBasket()
+                .checkCounter(3);
+    }
+
+    @Test
+    @Description("Remove from basket")
+    public void removeFromBasket(){
+        new HomePage().addToBasket()
+                .addToBasket()
+                .addToBasket()
+                .removeFromBasket()
+                .removeFromBasket()
+                .checkCounter(1);
+    }
+
+    @Test
+    @Description("Remove All from basket")
+    public void removeAllFromBasket(){
+        new HomePage().addToBasket()
+                .addToBasket()
+                .removeFromBasket()
+                .removeFromBasket()
+                .checkEmptyBasket();
+    }
+
+    @Test
+    @Description("open basket")
+    public void openBasket(){
+        new HomePage().openBasket()
+                .checkPage();
     }
 }

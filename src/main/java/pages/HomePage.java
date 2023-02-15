@@ -1,25 +1,28 @@
+package pages;
+
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import product.Product;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import static com.codeborne.selenide.Selenide.*;
 
-public class HomePage extends BasePage{
+public class HomePage extends AbstractHeaderPage{
 
     private final SelenideElement pageName = $x("//span[.='Products']");
-    private final SelenideElement basket = $x("//div[@id='shopping_cart_container']/a");
     private final SelenideElement sort = $x("//span[@class='select_container']");
     private final SelenideElement sortOptions = $x("//select[@class='product_sort_container']");
-    private final SelenideElement burgerMenuButton = $x("//button[@id='react-burger-menu-btn']");
+
     private final ElementsCollection cards = $$x ("//div[@class='inventory_item']");
-    private final ElementsCollection footerLinks = $$x ("//footer/ul[@class='social']/li/a");
+
     private final ElementsCollection navBarItems = $$x ("//nav/a");
 
 
@@ -30,12 +33,11 @@ public class HomePage extends BasePage{
         return this;
     }
 
+    @Override
     @Step ("Check general elements on page")
     public HomePage checkGeneralElements() {
-        basket.shouldBe(Condition.visible);
         sort.shouldBe(Condition.visible);
-        burgerMenuButton.shouldBe(Condition.visible);
-        return this;
+        return (HomePage) super.checkGeneralElements();
     }
 
     @Step ("Check cards list")
@@ -143,24 +145,17 @@ public class HomePage extends BasePage{
 
 
 
+    @Override
     @Step ("Check footer links")
     public HomePage checkFooterLinks() {
-        for (int i = 0; i < footerLinks.size(); i++) {
-            String link = footerLinks.get(i).getAttribute("href");
-            footerLinks.get(i).click();
-            switchTo().window(1);
-            checkUrl(link);
-            closeWindow();
-            switchTo().window(0);
-        }
-        return this;
+        return (HomePage) super.checkFooterLinks();
     }
 
 
+    @Override
     @Step ("Open burger menu")
     public HomePage openMenu() {
-      burgerMenuButton.shouldBe(Condition.visible).click();
-        return this;
+      return (HomePage) super.openMenu();
     }
 
     @Step ("Select menu section '{item}'")
@@ -180,5 +175,52 @@ public class HomePage extends BasePage{
        navBarItems.find(Condition.exactText("ABOUT")).hover().shouldHave(Condition.cssValue("color", "rgba(226, 35, 26, 1)"));
         return this;
     }
+
+    @Step ("Add to Basket")
+    public HomePage addToBasket() {
+        ElementsCollection buttons = $$x(".//button[contains(@id, 'add-to-cart')]");
+        buttons.get(new Random().nextInt(buttons.size())).shouldBe(Condition.visible).click();
+        return this;
+    }
+
+    @Step ("Add product.Product to Basket")
+    public HomePage addToBasket(Product product) {
+        SelenideElement card = cards.get(new Random().nextInt(cards.size()));
+        card.$x(".//button[contains(@id, 'add-to-cart')]").shouldBe(Condition.visible).click();
+        String name = card.$x(".//div[@class='inventory_item_name']").getText();
+        String description = card.$x(".//div[@class='inventory_item_desc']").getText();
+        Double price = Double.parseDouble(card.$x(".//div[@class='inventory_item_price']").getText().replaceAll("[$]", ""));
+        product.setName(name);
+        product.setDescription(description);
+        product.setPrice(price);
+        return this;
+    }
+
+    @Step ("Remove from Basket")
+    public HomePage removeFromBasket() {
+        ElementsCollection buttons = $$x(".//button[contains(@id, 'remove')]");
+        buttons.get(new Random().nextInt(buttons.size())).shouldBe(Condition.visible).click();
+        return this;
+    }
+
+    @Override
+    @Step ("Check product counter")
+    public HomePage checkCounter(){
+        return (HomePage) super.checkCounter();
+    }
+
+    @Override
+    @Step ("Check product counter")
+    public HomePage checkCounter(int count){
+        return (HomePage) super.checkCounter();
+    }
+
+    @Override
+    @Step ("Check empty basket")
+    public HomePage checkEmptyBasket(){
+        return ((HomePage) super.checkEmptyBasket());
+    }
+
+
 
 }

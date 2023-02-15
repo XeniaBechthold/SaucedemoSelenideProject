@@ -2,6 +2,7 @@ import jdk.jfr.Description;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import pages.LoginPage;
 
 import static com.codeborne.selenide.Selenide.open;
 

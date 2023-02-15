@@ -1,7 +1,7 @@
+package pages;
+
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverConditions;
-
-import static com.codeborne.selenide.WebDriverConditions.url;
 
 public class BasePage {
 
