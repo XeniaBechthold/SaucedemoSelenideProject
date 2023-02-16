@@ -20,6 +20,7 @@ public class HomePage extends AbstractHeaderPage{
     private final SelenideElement pageName = $x("//span[.='Products']");
     private final SelenideElement sort = $x("//span[@class='select_container']");
     private final SelenideElement sortOptions = $x("//select[@class='product_sort_container']");
+    private final SelenideElement backToProducts = $x("//button[@id='back-to-products']");
 
     private final ElementsCollection cards = $$x ("//div[@class='inventory_item']");
 
@@ -183,7 +184,7 @@ public class HomePage extends AbstractHeaderPage{
         return this;
     }
 
-    @Step ("Add product.Product to Basket")
+    @Step ("Add product to Basket")
     public HomePage addToBasket(Product product) {
         SelenideElement card = cards.get(new Random().nextInt(cards.size()));
         card.$x(".//button[contains(@id, 'add-to-cart')]").shouldBe(Condition.visible).click();
@@ -219,6 +220,25 @@ public class HomePage extends AbstractHeaderPage{
     @Step ("Check empty basket")
     public HomePage checkEmptyBasket(){
         return ((HomePage) super.checkEmptyBasket());
+    }
+
+    @Step ("Open Product")
+    public HomePage openProduct() {
+        SelenideElement card = cards.get(new Random().nextInt(cards.size()));
+        card.$x(".//div[@class='inventory_item_name']").shouldBe(Condition.visible).click();
+        return this;
+    }
+
+    @Step ("Back to Products")
+    public HomePage backToProducts() {
+        backToProducts.shouldBe(Condition.visible).click();
+        return this;
+    }
+
+    @Step ("check Logout")
+    public LoginPage logout() {
+        chooseMenuItem("LOGOUT");
+        return new LoginPage();
     }
 
 

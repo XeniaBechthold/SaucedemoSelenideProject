@@ -2,14 +2,11 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import jdk.jfr.Description;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
 import product.Product;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.codeborne.selenide.Selenide.open;
 
@@ -46,6 +43,14 @@ public class BasketTest {
                 .checkProduct(product);
     }
 
+    @Test
+    @Description("Check order field validation")
+    public void checkFieldValidation(){
+        new HomePage().addToBasket()
+                .openBasket()
+                .checkFieldValidation();
+    }
+
 
     @Test
     @Description("Check total price")
@@ -58,6 +63,47 @@ public class BasketTest {
                 .openBasket()
                 .orderForm("Test_name", "Test_last_name", "33609")
                 .checkTotalProductPrice(product1.getPrice()+product2.getPrice());
+    }
+
+    @Test
+    @Description("check remove products from basket")
+    public void checkRemoveProductsFromBasket(){
+        new HomePage().addToBasket()
+                .addToBasket()
+                .openBasket()
+                .removeFromBasket()
+                .checkProductListSize(1);
+    }
+
+    @Test
+    @Description("check return to home page")
+    public void checkReturnToHomePage(){
+        new HomePage().addToBasket()
+                .openBasket()
+                .returnToHomePage()
+                .checkPage();
+    }
+
+    @Test
+    @Description("Finish Order")
+    public void checkFinishOrder(){
+        new HomePage().addToBasket()
+                .addToBasket()
+                .openBasket()
+                .orderForm("Test_name", "Test_last_name", "33609")
+                .finishOrder();
+    }
+
+    @Test
+    @Description("back to home page after order")
+    public void backToHomePageAfterOrder(){
+        new HomePage().addToBasket()
+                .addToBasket()
+                .openBasket()
+                .orderForm("Test_name", "Test_last_name", "33609")
+                .finishOrder()
+                .backToHomePageAfterOrder()
+                .checkPage();
     }
 
 }

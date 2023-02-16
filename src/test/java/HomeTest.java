@@ -55,7 +55,7 @@ public class HomeTest {
     @Test
     @Description("Check reverse price sort")
     public void checkPriceReverseSort(){
-        new HomePage().checkPriceDefaultSort();
+        new HomePage().checkPriceReverseSort();
     }
 
     @Test
@@ -95,6 +95,16 @@ public class HomeTest {
                 .chooseMenuItem("ABOUT")
                 .checkAboutOpening();
     }
+
+    @Test
+    @Description("Check Reset App section")
+    public void checkResetAppSection(){
+        new HomePage().openMenu()
+                .addToBasket()
+                .chooseMenuItem("RESET APP STATE")
+                .checkEmptyBasket();
+    }
+
 
     @Test
     @Description("Check hover")
@@ -138,5 +148,37 @@ public class HomeTest {
     public void openBasket(){
         new HomePage().openBasket()
                 .checkPage();
+    }
+
+    @Test
+    @Description("open product")
+    public void openProduct(){
+        new HomePage().openProduct()
+                .checkUrl("https://www.saucedemo.com/inventory-item.html?id=");
+    }
+
+    @Test
+    @Description("Check All Items section")
+    public void checkAllItemsSection(){
+        new HomePage().openProduct()
+                .openMenu()
+                .chooseMenuItem("ALL ITEMS")
+                .checkPage();
+    }
+
+    @Test
+    @Description("Check back to products button")
+    public void checkBackToProductsButton(){
+        new HomePage().openProduct()
+                .backToProducts()
+                .checkPage();
+    }
+
+    @Test
+    @Description("Check Log Out")
+    public void checkLogOut(){
+        new HomePage().openMenu()
+                .logout()
+                .checkElements();
     }
 }

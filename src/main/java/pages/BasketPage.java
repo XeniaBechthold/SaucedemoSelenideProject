@@ -7,8 +7,9 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import product.Product;
 
-import static com.codeborne.selenide.Selenide.$$x;
-import static com.codeborne.selenide.Selenide.$x;
+import java.util.Random;
+
+import static com.codeborne.selenide.Selenide.*;
 
 public class BasketPage extends AbstractHeaderPage{
 
@@ -20,7 +21,12 @@ public class BasketPage extends AbstractHeaderPage{
     private final SelenideElement lastNameInput = $x("//input[@id='last-name']");
     private final SelenideElement zipInput = $x("//input[@id='postal-code']");
     private final SelenideElement continueButton = $x("//input[@id='continue']");
+    private final SelenideElement continueShopping = $x("//button[@id='continue-shopping']");
+    private final SelenideElement finishOrder = $x("//button[@id='finish']");
+    private final SelenideElement backHome = $x("//button[@id='back-to-products']");
     private final SelenideElement subTotal = $x("//div[@class='summary_subtotal_label']");
+    private final SelenideElement errorMessage = $x("//div[@class='error-message-container error']");
+    private final SelenideElement finishMessage = $x("//h2[@class='complete-header']");
 
     @Step ("Check basket page opening")
     public BasketPage checkPage() {
@@ -53,6 +59,15 @@ public class BasketPage extends AbstractHeaderPage{
         return this;
     }
 
+    @Step ("Check field validation")
+    public BasketPage checkFieldValidation() {
+        checkout.shouldBe(Condition.visible).click();
+        continueButton.click();
+        errorMessage.shouldBe(Condition.visible);
+        return this;
+    }
+
+
     @Step ("Form order")
     public BasketPage orderForm(String firstName, String lastName, String zip) {
         checkout.shouldBe(Condition.visible).click();
@@ -62,6 +77,33 @@ public class BasketPage extends AbstractHeaderPage{
         continueButton.click();
         return this;
     }
+
+    @Step ("Remove from Basket")
+    public BasketPage removeFromBasket() {
+        ElementsCollection buttons = $$x(".//button[contains(@id, 'remove')]");
+        buttons.get(new Random().nextInt(buttons.size())).shouldBe(Condition.visible).click();
+        return this;
+    }
+
+    @Step ("Return to home page")
+    public HomePage returnToHomePage() {
+        continueShopping.shouldBe(Condition.visible).click();
+        return new HomePage();
+    }
+
+    @Step ("Finish order")
+    public BasketPage finishOrder() {
+        finishOrder.shouldBe(Condition.visible).click();
+        finishMessage.shouldBe(Condition.visible).shouldHave(Condition.exactText("THANK YOU FOR YOUR ORDER"));
+        return this;
+    }
+
+    @Step ("Back to home page after order")
+    public HomePage backToHomePageAfterOrder() {
+        backHome.shouldBe(Condition.visible).click();
+        return new HomePage();
+    }
+
 
 
 
