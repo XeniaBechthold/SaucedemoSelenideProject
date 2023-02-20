@@ -1,10 +1,12 @@
+package ui;
+
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import jdk.jfr.Description;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.HomePage;
-import pages.LoginPage;
+import ui.pages.HomePage;
+import ui.pages.LoginPage;
 
 import static com.codeborne.selenide.Selenide.open;
 

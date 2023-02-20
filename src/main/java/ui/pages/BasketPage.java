@@ -1,11 +1,11 @@
-package pages;
+package ui.pages;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import product.Product;
+import ui.product.Product;
 
 import java.util.Random;
 
