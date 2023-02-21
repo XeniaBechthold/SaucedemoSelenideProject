@@ -1,7 +1,6 @@
 package api;
 
 import api.pet.PetService;
-import api.pet.create.request.CreatePetRequest;
 import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
