@@ -1,5 +1,6 @@
 package api.store;
 
+import api.BaseService;
 import api.store.DataHelper;
 import api.pet.PetService;
 import api.pet.create.request.CreatePetRequest;
@@ -11,7 +12,7 @@ import org.testng.Assert;
 
 import static io.restassured.RestAssured.given;
 
-public class StoreService {
+public class StoreService extends BaseService {
 
     public long getOrderId() {
         return orderId;
@@ -19,10 +20,8 @@ public class StoreService {
 
     long orderId;
 
-    RequestSpecification requestSpecification = given()
-            .baseUri("https://petstore.swagger.io/v2")
-            .basePath("store")
-            .contentType(ContentType.JSON);
+    RequestSpecification requestSpecification = baseRequestSpecification
+            .basePath("store");
 
     @Step("Place an order for a pet '{petId}'")
     public StoreService placeOrder(long petId){

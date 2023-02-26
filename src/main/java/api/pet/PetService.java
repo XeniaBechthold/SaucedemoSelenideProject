@@ -1,4 +1,5 @@
 package api.pet;
+import api.BaseService;
 import api.pet.create.request.CreatePetRequest;
 import api.pet.create.response.CreatePetResponse;
 import io.qameta.allure.Step;
@@ -9,7 +10,7 @@ import static io.restassured.RestAssured.given;
 import java.io.File;
 
 
-public class PetService {
+public class PetService extends BaseService {
     public long getPetId() {
         return petId;
     }
@@ -27,10 +28,8 @@ public class PetService {
     String oldName;
 
     String oldStatus;
-    RequestSpecification requestSpecification = given()
-            .baseUri("https://petstore.swagger.io/v2")
-            .basePath("pet")
-            .contentType(ContentType.JSON);
+    RequestSpecification requestSpecification = baseRequestSpecification
+            .basePath("pet");
 
     @Step ("Create Pet '{petName}'")
     public PetService createPet(String petName){
