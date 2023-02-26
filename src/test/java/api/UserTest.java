@@ -48,6 +48,9 @@ public class UserTest {
     public void createUserWithArray(){
         String[] names = {"name1", "name2", "name3", "name4", "name5"};
         new UserService().createUserWithArray(names);
+        for (int i = 0; i < names.length; i++) {
+            new UserService().getUserWithStatus(names[i], 200);
+        }
     }
 
 }
